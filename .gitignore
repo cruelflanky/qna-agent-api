@@ -74,6 +74,6 @@ Thumbs.db
 .claude/
 CLAUDE.md
 
-# Development documentation (not for production)
-docs/phases/
+# Development documentation
+docs/
 assessment.md
