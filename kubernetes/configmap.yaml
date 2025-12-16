@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qna-agent-config
+data:
+  # LLM Configuration
+  OPENAI_BASE_URL: "https://openrouter.ai/api/v1"
+  OPENAI_MODEL: "meta-llama/llama-3.1-8b-instruct:free"
+
+  # Database
+  DATABASE_URL: "sqlite+aiosqlite:///./data/qna.db"
+
+  # Knowledge Base
+  KNOWLEDGE_DIR: "/app/knowledge"
+
+  # Server
+  HOST: "0.0.0.0"
+  PORT: "8000"
+
+  # Logging
+  LOG_LEVEL: "INFO"
+  LOG_FORMAT: "json"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qna-agent-knowledge
+data:
+  company-info.txt: |
+    Company Information
+
+    Our company was founded in 2020 with a mission to provide excellent customer service.
+    We are located in San Francisco, California.
+
+    Business Hours:
+    - Monday to Friday: 9 AM - 6 PM PST
+    - Saturday: 10 AM - 4 PM PST
+    - Sunday: Closed
+
+  refund-policy.txt: |
+    Refund Policy
+
+    We offer a 30-day money-back guarantee on all purchases.
+
+    Eligibility:
+    - Items must be returned within 30 days of purchase
+    - Items must be in original condition with tags attached
+    - Proof of purchase is required
+
+  shipping-info.txt: |
+    Shipping Information
+
+    Domestic Shipping (USA):
+    - Standard: 5-7 business days ($5.99)
+    - Express: 2-3 business days ($12.99)
+    - Overnight: Next business day ($24.99)
+
+    Free shipping on orders over $50.

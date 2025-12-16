@@ -1,0 +1,30 @@
+services:
+  qna-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL:-https://openrouter.ai/api/v1}
+      - OPENAI_MODEL=${OPENAI_MODEL:-mistralai/devstral-2512:free}
+      - DATABASE_URL=sqlite+aiosqlite:///./data/qna.db
+      - KNOWLEDGE_DIR=/app/knowledge
+      - LOG_LEVEL=INFO
+      - LOG_FORMAT=json
+    volumes:
+      # Persist database
+      - qna-data:/app/data
+      # Mount knowledge base (for easy updates)
+      - ./knowledge:/app/knowledge:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  qna-data:

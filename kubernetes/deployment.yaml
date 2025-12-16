@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qna-agent
+  labels:
+    app: qna-agent
+    version: v1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: qna-agent
+  template:
+    metadata:
+      labels:
+        app: qna-agent
+        version: v1
+    spec:
+      # Security context for pod
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+
+      containers:
+        - name: qna-agent
+          image: qna-agent:latest
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+
+          # Environment from ConfigMap and Secret
+          envFrom:
+            - configMapRef:
+                name: qna-agent-config
+            - secretRef:
+                name: qna-agent-secrets
+
+          # Resource limits
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+
+          # Probes
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+
+          # Volume mounts
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+            - name: knowledge
+              mountPath: /app/knowledge
+              readOnly: true
+
+          # Security context for container
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
+
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: qna-agent-data
+        - name: knowledge
+          configMap:
+            name: qna-agent-knowledge
+
+      # Graceful shutdown
+      terminationGracePeriodSeconds: 30

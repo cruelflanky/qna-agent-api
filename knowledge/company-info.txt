@@ -1,0 +1,14 @@
+Company Information
+
+Our company was founded in 2020 with a mission to provide excellent customer service.
+We are located in San Francisco, California.
+
+Business Hours:
+- Monday to Friday: 9 AM - 6 PM PST
+- Saturday: 10 AM - 4 PM PST
+- Sunday: Closed
+
+Contact Information:
+- Email: support@example.com
+- Phone: 1-800-EXAMPLE
+- Address: 123 Main Street, San Francisco, CA 94102

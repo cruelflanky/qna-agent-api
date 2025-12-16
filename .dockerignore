@@ -1,0 +1,54 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv
+venv
+ENV
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Testing
+.pytest_cache
+.coverage
+htmlcov
+tests/
+
+# Documentation (not needed in image)
+docs/
+*.md
+!README.md
+
+# Environment files
+.env
+.env.*
+
+# Database files (will be mounted)
+*.db
+data/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Docker
+Dockerfile*
+docker-compose*
+
+# Kubernetes
+kubernetes/
+
+# Claude
+.claude/
+CLAUDE.md
